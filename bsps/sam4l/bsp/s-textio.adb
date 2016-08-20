@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---          Copyright (C) 1992-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 1992-2016, Free Software Foundation, Inc.         --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -15,8 +15,13 @@
 -- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
 -- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
 --                                                                          --
--- You should have received a copy of the GNU General Public License along  --
--- with this library; see the file COPYING3. If not, see:                   --
+--                                                                          --
+--                                                                          --
+--                                                                          --
+--                                                                          --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program;     --
+-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
 -- <http://www.gnu.org/licenses/>.                                          --
 --                                                                          --
 -- GNAT was originally developed  by the GNAT team at  New York University. --
@@ -24,53 +29,43 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Minimal version of Text_IO body for use on SAM4S, using UART1
+--  Minimal version of Text_IO body for use on ATSAM4L, using USART
 
-with System.SAM4S; use System.SAM4S;
+with Interfaces; use Interfaces;
+
+with Interfaces.Bit_Types;   use Interfaces.Bit_Types;
+with Interfaces.ATSAM4L.PM;   use Interfaces.ATSAM4L.PM;
+with Interfaces.ATSAM4L.GPIO;  use Interfaces.ATSAM4L.GPIO;
+with Interfaces.ATSAM4L.USART; use Interfaces.ATSAM4L.USART;
+with System.ATSAM4;           use System.ATSAM4;
+with System.BB.Parameters;
 
 package body System.Text_IO is
 
-   Baudrate : constant := 115_200;
+   --  Baudrate : constant := 115_200;
    --  Bitrate to use
-
-   ---------
-   -- Get --
-   ---------
-
-   function Get return Character is
-      (Character'Val (UART1.UART_RHR and 16#FF#));
 
    ----------------
    -- Initialize --
    ----------------
 
    procedure Initialize is
-      PB2 : constant := 2 ** 2; --  RX line
-      PB3 : constant := 2 ** 3; --  TX line
+      use System.BB.Parameters;
 
-      Uart_Ports : constant := PB2 + PB3;
+     -- APB_Clock    : constant Positive :=
+     --    Positive (ATSAM4.System_Clocks.PCLK2);
+     -- Int_Divider  : constant Positive := (25 * APB_Clock) / (4 * Baudrate);
+     -- Frac_Divider : constant Natural := Int_Divider rem 100;
 
    begin
       Initialized := True;
 
-      --  Init uart1
+      -- Select pins
+      -- Enable clock
+      -- Select mode
+      -- set baudrate
+      PM_Periph.PBAMASK.USART1 := 1;
 
-      --  Power-up clocks
-
-      PMC.PMC_PCER0 := 2 ** UART1_ID + 2 ** PIOB_ID;
-
-      --  Setup IO pins
-
-      PIOB.PDR := Uart_Ports;
-      PIOB.ODR := Uart_Ports;
-      PIOB.PUER := PB3;
-      PIOB.MDDR := Uart_Ports;
-      PIOB.ABCDSR1 := PIOB.ABCDSR1 and not Uart_Ports;
-      PIOB.ABCDSR2 := PIOB.ABCDSR2 and not Uart_Ports;
-
-      UART1.UART_BRGR := 120_000_000 / (16 * Baudrate);
-      UART1.UART_MR := UART_MR.CHMODE_NORMAL or UART_MR.PAR_NO;
-      UART1.UART_CR := UART_CR.TXEN or UART_CR.RXEN;
    end Initialize;
 
    -----------------
@@ -78,14 +73,21 @@ package body System.Text_IO is
    -----------------
 
    function Is_Tx_Ready return Boolean is
-      ((UART1.UART_SR and UART_SR.TXRDY) /= 0);
+     (USART1_Periph.CR_USART_MODE.TXEN = TXENSelect_1);
 
    -----------------
    -- Is_Rx_Ready --
    -----------------
 
    function Is_Rx_Ready return Boolean is
-      ((UART1.UART_SR and UART_SR.RXRDY) /= 0);
+     (USART1_Periph.CSR_USART_MODE.RXRDY = RXRDYSelect_1);
+
+   ---------
+   -- Get --
+   ---------
+
+   function Get return Character is
+      (Character'Val (USART1_Periph.RHR.RXCHR));
 
    ---------
    -- Put --
@@ -93,7 +95,7 @@ package body System.Text_IO is
 
    procedure Put (C : Character) is
    begin
-      UART1.UART_THR := Character'Pos (C);
+      USART1_Periph.THR.TXCHR := Character'Pos (C);
    end Put;
 
    ----------------------------

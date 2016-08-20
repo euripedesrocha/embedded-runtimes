@@ -4,7 +4,7 @@
 --                                                                          --
 --              S Y S T E M . B B . M C U _ P A R A M E T E R S             --
 --                                                                          --
---                                  S p e c                                 --
+--                                  B o d y                                 --
 --                                                                          --
 --                      Copyright (C) 2016, AdaCore                         --
 --                                                                          --
@@ -32,24 +32,31 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package defines MCU parameters for the STM32F40x family
+with Interfaces.ATSAM4L.PM; use Interfaces.ATSAM4L.PM;
 
-with Interfaces.ATSAM4L.PM;
-with Interfaces.Bit_Types;
+package body System.BB.MCU_Parameters is
 
-package System.BB.MCU_Parameters is
-   pragma Preelaborate;
-   use type Interfaces.Bit_Types.Bit;
+   --------------------
+   -- PM_Initialize --
+   --------------------
 
-   Number_Of_Interrupts : constant := 83;
+   procedure PM_Initialize
+   is
+   begin
+      --  Set the PM to Scale 1 mode to stabilize the MCU when in high
+      --  performance mode.
+      null;
+      --  PM_Periph.CR.VOS := 1;
+   end PM_Initialize;
 
-   Has_FPU : constant Boolean := False;
+   --------------------------
+   -- PM_Overdrive_Enable --
+   --------------------------
 
-   procedure PM_Initialize;
-
-   procedure PM_Overdrive_Enable;
-
-   --  function Is_PM_Stabilized return Boolean
-   --  is (Interfaces.STM32.PM.PM_Periph.CSR.VOSRDY = 1);
+   procedure PM_Overdrive_Enable
+   is
+   begin
+      null;
+   end PM_Overdrive_Enable;
 
 end System.BB.MCU_Parameters;

@@ -15,8 +15,13 @@
 -- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
 -- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
 --                                                                          --
--- You should have received a copy of the GNU General Public License along  --
--- with this library; see the file COPYING3. If not, see:                   --
+--                                                                          --
+--                                                                          --
+--                                                                          --
+--                                                                          --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program;     --
+-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
 -- <http://www.gnu.org/licenses/>.                                          --
 --                                                                          --
 -- GNAT was originally developed  by the GNAT team at  New York University. --
@@ -27,8 +32,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package defines board parameters for the ATMEL SAM4S Xplained Pro
---  board
+--  This package defines board parameters for the STM32F407-Discovery board
 
 package System.BB.Board_Parameters is
    pragma Pure;
@@ -37,6 +41,12 @@ package System.BB.Board_Parameters is
    -- Hardware clock --
    --------------------
 
-   Clock_Frequency : constant := 120_000_000;
+   Clock_Frequency : constant := 30_000_000;
+   --  Optimal frequency of the system clock. Note that the STM32F411 can go
+   --  up to 200 MHz, but all other STM32F40x and STM32F41x MCUs can only do
+   --  168 MHz.
+
+   OSC0_Clock_Frequency : constant := 8_000_000;
+   --  Frequency of High Speed External clock.
 
 end System.BB.Board_Parameters;

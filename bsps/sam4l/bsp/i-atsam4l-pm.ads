@@ -43,16 +43,7 @@ package Interfaces.ATSAM4L.PM is
    ------------------------
 
    --  CPU Clock Select
-   type CPUSELSelect is
-     (
-      --  fCPU:fmain. CPUDIV:
-      CPUSELSelect_0,
-      --  fCPU:fmain / 2^(CPUSEL+1)
-      CPUSELSelect_1)
-     with Size => 3;
-   for CPUSELSelect use
-     (CPUSELSelect_0 => 0,
-      CPUSELSelect_1 => 1);
+   type CPUSELSelect is Interfaces.Bit_Types.UInt3;
 
    subtype CPUSEL_CPUDIV_Field is Interfaces.Bit_Types.Bit;
 

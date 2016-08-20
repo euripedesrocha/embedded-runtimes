@@ -41,7 +41,7 @@ package System.ATSAM4 is
 
    type PM_System_Clocks is record
       MAINCLK  : Frequency;
-      CPUCLK  : Frequency;
+      CPUCLK   : Frequency;
       AHBCLK   : Frequency;
    end record;
 

@@ -43,14 +43,14 @@ package Interfaces.ATSAM4L.PM is
    ------------------------
 
    --  CPU Clock Select
-   type CPUSELSelect is Interfaces.Bit_Types.UInt3;
+   subtype CPUSELSelect is Interfaces.Bit_Types.UInt3;
 
    subtype CPUSEL_CPUDIV_Field is Interfaces.Bit_Types.Bit;
 
    --  CPU Clock Select
    type PM_CPUSEL_Register is record
       --  CPU Clock Select
-      CPUSEL        : CPUSELSelect := Interfaces.ATSAM4L.PM.CPUSELSelect_0;
+      CPUSEL        : CPUSELSelect := 0;
       --  unspecified
       Reserved_3_6  : Interfaces.Bit_Types.UInt4 := 16#0#;
       --  CPU Division

@@ -158,7 +158,7 @@ package Interfaces.ATSAM4L.GPIO is
 
    --  Peripheral Mux Register 0
    type PMR_Register
-     (As_Array : Boolean := False)
+     (As_Array : Boolean := True)
    is record
       case As_Array is
          when False =>

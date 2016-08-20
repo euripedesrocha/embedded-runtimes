@@ -58,13 +58,15 @@ package body System.Text_IO is
      -- Frac_Divider : constant Natural := Int_Divider rem 100;
 
    begin
-      Initialized := True;
 
-      -- Select pins
-      -- Enable clock
-      -- Select mode
-      -- set baudrate
+      GPIO_Periph.PMR00.Arr (15 .. 16) := (0, 0);
+      GPIO_Periph.PMR10.Arr (15 .. 16) := (0, 0);
+      GPIO_Periph.PMR20.Arr (15 .. 16) := (0, 0);
       PM_Periph.PBAMASK.USART1 := 1;
+
+      --  set baudrate
+
+      Initialized := True;
 
    end Initialize;
 

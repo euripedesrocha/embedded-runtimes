@@ -37,18 +37,18 @@ project Runtime_Build is
         "-Dinhibit_libc");
      case Build is
         when "Production" =>
-	   --  Optimize
+           --  Optimize
            COMFLAGS := COMFLAGS & ("-O2");
            ADAFLAGS := ADAFLAGS & ("-gnatp", "-gnatn2");
         when "Debug" =>
-	   --  Disable optimization and add debug symbols
+           --  Disable optimization and add debug symbols
            COMFLAGS := COMFLAGS & ("-O0", "-g");
            ASMFLAGS := ASMFLAGS & ("-g");
-	   --  Possibly enable assertions. This might use too much memory on
-	   --  some systems or could be too slow.
-	   --  ADAFLAGS := ADAFLAGS & ("-gnata");
+           --  Possibly enable assertions. This might use too much memory on
+           --  some systems or could be too slow.
+           --  ADAFLAGS := ADAFLAGS & ("-gnata");
         when "Gnatcov" =>
-	   --  For coverage
+           --  For coverage
            COMFLAGS := COMFLAGS & ("-O0", "-g", "-fdump-scos",
                                "-fpreserve-control-flow");
      end case;

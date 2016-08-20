@@ -30,7 +30,7 @@
 --
 --    The file is based on ATSAM4F version by Adacore
 
-with System.BB.Parameters;
+with System.BB.Board_Parameters;
 
 with Ada.Unchecked_Conversion;
 with Interfaces;            use Interfaces;
@@ -39,7 +39,7 @@ with Interfaces.ATSAM4L.PM; use Interfaces.ATSAM4L.PM;
 
 package body System.ATSAM4 is
 
-   package Param renames System.BB.Parameters;
+   package BoardParam renames System.BB.Board_Parameters;
 
    CPUSEL_Presc_Table : constant array (CPUSEL_Prescaler_Enum) of Word :=
       (2, 4, 8, 16, 64, 128, 256, 512);
@@ -76,7 +76,7 @@ package body System.ATSAM4 is
                Result.MAINCLK := RCSYS_Clock / CPUSEL_Div;
                --      OSC0 as source
             when MAINCLK_SRC_OSC0 =>
-               Result.MAINCLK := Param.OSC0_Clock;
+               Result.MAINCLK := BoardParam.OSC0_Clock_Frequency;
                --      PLL as source
             when  MAINCLK_SRC_PLL =>
                null;

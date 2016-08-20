@@ -831,9 +831,9 @@ package Interfaces.ATSAM4L.USART is
    --  Synchronous Mode Select
    type SYNCSelect is
      (
-      --  USART operates in Synchronous Mode
-      SYNCSelect_0,
       --  USART operates in Asynchronous Mode
+      SYNCSelect_0,
+      --  USART operates in Synchronous Mode
       SYNCSelect_1)
      with Size => 1;
    for SYNCSelect use

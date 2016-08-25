@@ -30,7 +30,7 @@ package Interfaces.ATSAM4L.GPIO is
 
    --  GPIO Enable Register
    type GPER_Register
-     (As_Array : Boolean := False)
+     (As_Array : Boolean := True)
    is record
       case As_Array is
          when False =>
@@ -478,7 +478,7 @@ package Interfaces.ATSAM4L.GPIO is
 
    --  Output Driver Enable Register
    type ODER_Register
-     (As_Array : Boolean := False)
+     (As_Array : Boolean := True)
    is record
       case As_Array is
          when False =>

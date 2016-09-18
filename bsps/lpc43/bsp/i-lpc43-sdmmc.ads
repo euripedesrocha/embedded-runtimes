@@ -214,28 +214,28 @@ package Interfaces.LPC43.SDMMC is
       --  abort_read_data, send_irq_response, and read_wait bits of Control
       --  register - start_cmd bit of Command register Does not affect any
       --  registers or DMA interface, or FIFO. or host interrupts.
-      CONTROLLER_RESET              : ENUM :=
-                                       Interfaces.LPC43.SDMMC.No_Change;
+      CONTROLLER_RESET   : ENUM :=
+                            Interfaces.LPC43.SDMMC.No_Change;
       --  Fifo reset. To reset FIFO, software should set bit to 1. This bit is
       --  auto-cleared after completion of reset operation. auto-cleared after
       --  two AHB clocks.
-      FIFO_RESET                    : ENUM :=
-                                       Interfaces.LPC43.SDMMC.No_Change;
+      FIFO_RESET         : ENUM :=
+                            Interfaces.LPC43.SDMMC.No_Change;
       --  Dma reset. To reset DMA interface, software should set bit to 1. This
       --  bit is auto-cleared after two AHB clocks.
-      DMA_RESET                     : ENUM :=
-                                       Interfaces.LPC43.SDMMC.No_Change;
+      DMA_RESET          : ENUM :=
+                            Interfaces.LPC43.SDMMC.No_Change;
       --  Reserved
-      RESERVED                      : CTRL_RESERVED_Field := 16#0#;
+      RESERVED           : CTRL_RESERVED_Field := 16#0#;
       --  Global interrupt enable/disable bit. The int port is 1 only when this
       --  bit is 1 and one or more unmasked interrupts are set.
-      INT_ENABLE                    : ENUM_1 :=
-                                       Interfaces.LPC43.SDMMC.Disable_Interrupts;
+      INT_ENABLE         : ENUM_1 :=
+                           Interfaces.LPC43.SDMMC.Disable_Interrupts;
       --  Reserved. Always write this bit as 0.
-      RESERVED_1                    : CTRL_RESERVED_Field := 16#0#;
+      RESERVED_1         : CTRL_RESERVED_Field := 16#0#;
       --  Read/wait. For sending read-wait to SDIO cards.
-      READ_WAIT                     : ENUM_2 :=
-                                       Interfaces.LPC43.SDMMC.Clear_Read_Wait;
+      READ_WAIT          : ENUM_2 :=
+                            Interfaces.LPC43.SDMMC.Clear_Read_Wait;
       --  Send irq response. This bit automatically clears once response is
       --  sent. To wait for MMC card interrupts, the host issues CMD40, and the
       --  SD/MMC controller waits for an interrupt response from the MMC card.
@@ -243,11 +243,11 @@ package Interfaces.LPC43.SDMMC is
       --  waiting for interrupt state, it can set this bit, at which time the
       --  SD/MMC interface command state-machine sends a CMD40 response on the
       --  bus and returns to idle state.
-      SEND_IRQ_RESPONSE             : ENUM_3 :=
-                                       Interfaces.LPC43.SDMMC.No_Change;
+      SEND_IRQ_RESPONSE  : ENUM_3 :=
+                            Interfaces.LPC43.SDMMC.No_Change;
       --  Abort read data. Used in SDIO card suspend sequence.
-      ABORT_READ_DATA               : ENUM_4 :=
-                                       Interfaces.LPC43.SDMMC.No_Change;
+      ABORT_READ_DATA    : ENUM_4 :=
+                            Interfaces.LPC43.SDMMC.No_Change;
       --  Send ccsd. When set, the SD/MMC controller sends CCSD to the CE-ATA
       --  device. Software sets this bit only if current command is expecting
       --  CCS (that is, RW_BLK) and interrupts are enabled in CE-ATA device.
@@ -258,8 +258,8 @@ package Interfaces.LPC43.SDMMC is
       --  takes two card clock cycles to drive the CCSD on the CMD line. Due to
       --  this, during the boundary conditions it may happen that CCSD is sent
       --  to the CE-ATA device, even if the device signalled CCS.
-      SEND_CCSD                     : ENUM_5 :=
-                                       Interfaces.LPC43.SDMMC.Clear_Bit;
+      SEND_CCSD          : ENUM_5 :=
+                            Interfaces.LPC43.SDMMC.Clear_Bit;
       --  Send auto stop ccsd. NOTE: Always set send_auto_stop_ccsd and
       --  send_ccsd bits together; send_auto_stop_ccsd should not be set
       --  independent of send_ccsd. When set, the SD/MMC interface
@@ -269,8 +269,8 @@ package Interfaces.LPC43.SDMMC is
       --  host if Auto Command Done interrupt is not masked. After sending the
       --  CCSD, the SD/MMC interface automatically clears send_auto_stop_ccsd
       --  bit.
-      SEND_AUTO_STOP                : ENUM_6 :=
-                                       Interfaces.LPC43.SDMMC.Clear_This_Bit_If_Th;
+      SEND_AUTO_STOP     : ENUM_6 :=
+                            Interfaces.LPC43.SDMMC.Clear_This_Bit_If_Th;
       --  CEATA device interrupt status. Software should appropriately write to
       --  this bit after power-on reset or any other reset to CE-ATA device.
       --  After reset, usually CE-ATA device interrupt is disabled (nIEN = 1).
@@ -279,19 +279,19 @@ package Interfaces.LPC43.SDMMC is
       CEATA_DEVICE_INTERRUPT_STATUS : ENUM_7 :=
                                        Interfaces.LPC43.SDMMC.Disabled;
       --  Reserved
-      RESERVED_2                    : CTRL_RESERVED_Field_1 := 16#0#;
+      RESERVED_2         : CTRL_RESERVED_Field_1 := 16#0#;
       --  Controls the state of the SD_VOLT0 pin. SD/MMC card voltage control
       --  is not implemented.
-      CARD_VOLTAGE_A                : CTRL_CARD_VOLTAGE_A_Field :=
-                                       (As_Array => False, Val => 16#0#);
+      CARD_VOLTAGE_A     : CTRL_CARD_VOLTAGE_A_Field :=
+                            (As_Array => False, Val => 16#0#);
       --  Reserved.
-      RESERVED_3                    : CTRL_RESERVED_Field_2 := 16#0#;
+      RESERVED_3         : CTRL_RESERVED_Field_2 := 16#0#;
       --  Reserved. Always write this bit as 0.
-      RESERVED_4                    : CTRL_RESERVED_Field := 16#0#;
+      RESERVED_4         : CTRL_RESERVED_Field := 16#0#;
       --  SD/MMC DMA use.
-      USE_INTERNAL_DMAC             : ENUM_8 := Interfaces.LPC43.SDMMC.Host;
+      USE_INTERNAL_DMAC  : ENUM_8 := Interfaces.LPC43.SDMMC.Host;
       --  Reserved
-      RESERVED_5                    : CTRL_RESERVED_Field_3 := 16#0#;
+      RESERVED_5         : CTRL_RESERVED_Field_3 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -814,24 +814,24 @@ package Interfaces.LPC43.SDMMC is
    --  Command Register
    type CMD_Register is record
       --  Command index
-      CMD_INDEX                   : CMD_CMD_INDEX_Field := 16#0#;
+      CMD_INDEX         : CMD_CMD_INDEX_Field := 16#0#;
       --  Response expect
-      RESPONSE_EXPECT             : ENUM_9 := Interfaces.LPC43.SDMMC.None;
+      RESPONSE_EXPECT   : ENUM_9 := Interfaces.LPC43.SDMMC.None;
       --  Response length
-      RESPONSE_LENGTH             : ENUM_10 := Interfaces.LPC43.SDMMC.Short;
+      RESPONSE_LENGTH   : ENUM_10 := Interfaces.LPC43.SDMMC.Short;
       --  Check response crc. Some of command responses do not return valid CRC
       --  bits. Software should disable CRC checks for those commands in order
       --  to disable CRC checking by controller.
-      CHECK_RESPONSE_CRC          : ENUM_11 :=
-                                     Interfaces.LPC43.SDMMC.Do_Not_Check_Respons;
+      CHECK_RESPONSE_CRC : ENUM_11 :=
+                            Interfaces.LPC43.SDMMC.Do_Not_Check_Respons;
       --  Data expected
-      DATA_EXPECTED               : ENUM_12 := Interfaces.LPC43.SDMMC.None;
+      DATA_EXPECTED      : ENUM_12 := Interfaces.LPC43.SDMMC.None;
       --  read/write. Don't care if no data expected from card.
-      READ_WRITE                  : ENUM_13 :=
-                                     Interfaces.LPC43.SDMMC.Read_From_Card;
+      READ_WRITE         : ENUM_13 :=
+                            Interfaces.LPC43.SDMMC.Read_From_Card;
       --  Transfer mode. Don't care if no data expected.
-      TRANSFER_MODE               : ENUM_14 :=
-                                     Interfaces.LPC43.SDMMC.Block_Data_Transfer;
+      TRANSFER_MODE   : ENUM_14 :=
+                         Interfaces.LPC43.SDMMC.Block_Data_Transfer;
       --  Send auto stop. When set, the SD/MMC interface sends stop command to
       --  SD_MMC_CEATA cards at end of data transfer. Refer to Table 339 to
       --  determine: - when send_auto_stop bit should be set, since some data
@@ -840,8 +840,8 @@ package Interfaces.LPC43.SDMMC is
       --  when resume is sent to resume - suspended memory access of SD-Combo
       --  card - bit should be set correctly if suspended data transfer needs
       --  send_auto_stop. Don't care if no data expected from card.
-      SEND_AUTO_STOP              : ENUM_15 :=
-                                     Interfaces.LPC43.SDMMC.No_Stop_Command_Sent;
+      SEND_AUTO_STOP     : ENUM_15 :=
+                            Interfaces.LPC43.SDMMC.No_Stop_Command_Sent;
       --  Wait prvdata complete. The wait_prvdata_complete = 0 option typically
       --  used to query status of card during data transfer or to stop current
       --  data transfer; card_number should be same as in previous command.
@@ -899,8 +899,8 @@ package Interfaces.LPC43.SDMMC is
       --  enable_boot together.
       DISABLE_BOOT                : CMD_DISABLE_BOOT_Field := 16#0#;
       --  Boot Mode
-      BOOT_MODE                   : ENUM_20 :=
-                                     Interfaces.LPC43.SDMMC.Mandatory_Boot_Opera;
+      BOOT_MODE          : ENUM_20 :=
+                            Interfaces.LPC43.SDMMC.Mandatory_Boot_Opera;
       --  Voltage switch bit
       VOLT_SWITCH                 : ENUM_7 := Interfaces.LPC43.SDMMC.Disabled;
       --  Reserved

@@ -219,7 +219,9 @@ package Interfaces.LPC43.TIMER is
       RESERVED at 0 range 12 .. 31;
    end record;
 
-   --  Match Register 0. MR0 can be enabled through the MCR to reset the TC, stop both the TC and PC, and/or generate an interrupt every time MR0 matches the TC.
+   --  Match Register 0. MR0 can be enabled through the MCR to reset the TC,
+   --  stop both the TC and PC, and/or generate an interrupt every time MR0
+   --  matches the TC.
 
    --  Match Register 0. MR0 can be enabled through the MCR to reset the TC,
    --  stop both the TC and PC, and/or generate an interrupt every time MR0
@@ -321,7 +323,8 @@ package Interfaces.LPC43.TIMER is
       RESERVED at 0 range 12 .. 31;
    end record;
 
-   --  Capture Register 0. CR0 is loaded with the value of TC when there is an event on the CAPn.0 input.
+   --  Capture Register 0. CR0 is loaded with the value of TC when there is an
+   --  event on the CAPn.0 input.
 
    --  Capture Register 0. CR0 is loaded with the value of TC when there is an
    --  event on the CAPn.0 input.

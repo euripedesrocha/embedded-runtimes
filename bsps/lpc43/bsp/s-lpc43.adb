@@ -1,4 +1,4 @@
-with Interfaces.LPC43xxC.CGU; use Interfaces.LPC43xxC.CGU;
+with Interfaces.LPC43.CGU; use Interfaces.LPC43.CGU;
 
 package body System.LPC43 is
 

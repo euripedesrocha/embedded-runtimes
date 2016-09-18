@@ -417,13 +417,15 @@ package Interfaces.LPC43.SGPIO is
    --  Slice multiplexer configuration registers.
    type SLICE_MUX_CFG_Registers is array (0 .. 15) of SLICE_MUX_CFG_Register;
 
-   --  Slice data registers. Each time COUNT0 reaches 0x0 the register shifts loading bit 31 with data captured from DIN(n). DOUT(n) is set to REG(0)
+   --  Slice data registers. Each time COUNT0 reaches 0x0 the register shifts
+   --  loading bit 31 with data captured from DIN(n). DOUT(n) is set to REG(0)
 
    --  Slice data registers. Each time COUNT0 reaches 0x0 the register shifts
    --  loading bit 31 with data captured from DIN(n). DOUT(n) is set to REG(0)
    type REG_Registers is array (0 .. 15) of Interfaces.Bit_Types.Word;
 
-   --  Slice data shadow registers. Each time POS reaches 0x0 the contents of REG_SS is exchanged with the content of REG
+   --  Slice data shadow registers. Each time POS reaches 0x0 the contents of
+   --  REG_SS is exchanged with the content of REG
 
    --  Slice data shadow registers. Each time POS reaches 0x0 the contents of
    --  REG_SS is exchanged with the content of REG

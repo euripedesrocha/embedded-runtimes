@@ -12,5 +12,6 @@ package System.LPC43 is
    end record;
 
    function System_Clocks return CGU_System_Clocks;
+   subtype BASE_M4_CLK_Range is Integer range           1 .. 216_000_000;
 
 end System.LPC43;

@@ -1532,12 +1532,15 @@ package Interfaces.LPC43.C_CAN1 is
 
    --  CAN clock divider register
    type CLKDIV_Register is record
-      --  								Clock divider value 								CAN_CLK = PCLK/(CLKDIVVAL +1)
-      --  								 								0000: CAN_CLK = PCLK divided by 1. 								0001:
-      --  CAN_CLK = PCLK divided by 2. 								0010: CAN_CLK = PCLK divided by
-      --  3. 								0011: CAN_CLK = PCLK divided by 4. 								0100: CAN_CLK =
-      --  PCLK divided by 5. 								... 								1111: CAN_CLK = PCLK divided
-      --  by 16. 								 							
+      --  Clock divider value
+      --  CAN_CLK = PCLK/(CLKDIVVAL +1)
+      --     0000: CAN_CLK = PCLK divided by 1.
+      --     0001: CAN_CLK = PCLK divided by 2.
+      --     0010: CAN_CLK = PCLK divided by 3.
+      --     0011: CAN_CLK = PCLK divided by 4.
+      --     0100: CAN_CLK = PCLK divided by 5.
+      --     ...
+      --     1111: CAN_CLK = PCLK divided by 16.
       CLKDIVVAL : CLKDIV_CLKDIVVAL_Field := 16#1#;
       --  reserved
       RESERVED  : CLKDIV_RESERVED_Field := 16#0#;

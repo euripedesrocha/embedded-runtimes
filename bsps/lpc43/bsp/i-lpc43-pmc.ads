@@ -57,10 +57,9 @@ package Interfaces.LPC43.PMC is
 
    --  Hardware sleep event enable register
    type PD0_SLEEP0_HW_ENA_Register is record
-      --  Writing a 1 enables the Cortex-M4 core to put the part 								into
-      --  any of the Power-down modes Deep-sleep, 								Power-down, or Deep
-      --  power-down depending on the 								value in the PD0_SLEEP0_MODE
-      --  register.
+      --  Writing a 1 enables the Cortex-M4 core to put the part into any of
+      --  the Power-down modes Deep-sleep, Power-down, or Deep power-down
+      --  depending on the value in the PD0_SLEEP0_MODE register.
       ENA_EVENT : PD0_SLEEP0_HW_ENA_ENA_EVENT_Field :=
                    (As_Array => False, Val => 16#1#);
       --  Reserved, user software should not write ones to reserved bits. The

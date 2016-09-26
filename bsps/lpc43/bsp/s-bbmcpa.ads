@@ -8,4 +8,6 @@ package System.BB.MCU_Parameters is
 
    Number_Of_Interrupts : constant := 54;
 
+   IRC_Clock_Frequency : constant := 12_000_000;
+
 end System.BB.MCU_Parameters;

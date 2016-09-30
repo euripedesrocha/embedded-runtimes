@@ -1,28 +1,46 @@
 with "target_options.gpr";
 
 project Runtime_Build is
-  for Languages use ("Ada", "Asm_Cpp");
 
-  for Library_Auto_Init use "False";
-  for Library_Name use "gnat";
-  for Library_Kind use "static";
+  type RTS_Kind is ("ravenscar-sfp", "ravenscar-full");
+  RTS : RTS_Kind := External ("RTS", "ravenscar-sfp");
 
-  for Library_Dir use "adalib";
-  for Object_Dir use "obj";
+   case RTS is
+      when "ravenscar-sfp" =>
+         for Languages use ("Ada", "Asm_Cpp");
+      when "ravenscar-full" =>
+         for Languages use ("Ada", "C", "Asm_Cpp");
+   end case;
 
-  for Source_Dirs use ("../bsps/sam4l/bsp",
-                       "../base_runtimes/ravenscar-sfp/arch",
-                       "../base_runtimes/ravenscar-sfp/common");
+   for Library_Auto_Init use "False";
+   for Library_Name use "gnat";
+   for Library_Kind use "static";
 
-  for Target use "arm-eabi";
+   for Target use "arm-eabi";
+
+   case RTS is
+      when "ravenscar-sfp"  =>
+         for Library_Dir use "sfp/adalib";
+         for Object_Dir use "sfp/obj";
+
+         for Source_Dirs use ("../bsps/sam4l/bsp",
+                              "../base_runtimes/ravenscar-sfp/arch",
+                              "../base_runtimes/ravenscar-sfp/common");
+         for Runtime ("Ada") use Project'Project_Dir & "sfp";
+      when "ravenscar-full" =>
+         for Library_Dir use "full/adalib";
+         for Object_Dir use "full/obj";
+
+         for Source_Dirs use ("../bsps/sam4l/bsp",
+                              "../base_runtimes/ravenscar-full/arch",
+                              "../base_runtimes/ravenscar-full/common",
+                              "../base_runtimes/ravenscar-full/math");
+         for Runtime ("Ada") use Project'Project_Dir & "full";
+  end case;
 
   type Build_Type is ("Production", "Debug", "Gnatcov");
 
-  Build : Build_Type := external ("BUILD", "Production");
-
-  package Builder is
-     for Switches ("Ada") use ("--RTS=" & Project'project_dir);
-  end Builder;
+  Build : Build_Type := external ("BUILD_RTS", "Production");
 
   package Compiler is
      --  COMFLAGS here is common flags (used for C and Ada).
@@ -37,18 +55,18 @@ project Runtime_Build is
         "-Dinhibit_libc");
      case Build is
         when "Production" =>
-           --  Optimize
+	   --  Optimize
            COMFLAGS := COMFLAGS & ("-O2");
            ADAFLAGS := ADAFLAGS & ("-gnatp", "-gnatn2");
         when "Debug" =>
-           --  Disable optimization and add debug symbols
+	   --  Disable optimization and add debug symbols
            COMFLAGS := COMFLAGS & ("-O0", "-g");
            ASMFLAGS := ASMFLAGS & ("-g");
-           --  Possibly enable assertions. This might use too much memory on
-           --  some systems or could be too slow.
-           --  ADAFLAGS := ADAFLAGS & ("-gnata");
+	   --  Possibly enable assertions. This might use too much memory on
+	   --  some systems or could be too slow.
+	   --  ADAFLAGS := ADAFLAGS & ("-gnata");
         when "Gnatcov" =>
-           --  For coverage
+	   --  For coverage
            COMFLAGS := COMFLAGS & ("-O0", "-g", "-fdump-scos",
                                "-fpreserve-control-flow");
      end case;

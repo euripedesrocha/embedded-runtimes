@@ -1,7 +1,7 @@
 MEMORY
 {
-  flasha     (rx)  : ORIGIN = 0x1A000000, LENGTH = 256K
-  flashb     (rx)  : ORIGIN = 0x1B000000, LENGTH = 256K
+  flasha     (rx)  : ORIGIN = 0x1A000000, LENGTH = 512K
+  flashb     (rx)  : ORIGIN = 0x1B000000, LENGTH = 512K
   sram0     (rwx)  : ORIGIN = 0x10000000, LENGTH = 32K
   sram1     (rwx)  : ORIGIN = 0x10080000, LENGTH = 40K
   ahb_sram0 (rwx)  : ORIGIN = 0x20000000, LENGTH = 32K

@@ -27,9 +27,10 @@
 
 	.text
 	.thumb_func
-	.globl	_stm32_start_common
-        .type _stm32_start_common, #function
-_stm32_start_common:
+	.globl	_lpc43_start_common
+        .type _lpc43_start_common, #function
+_lpc43_start_common:
+
         /**************/
         /* Enable FPU */
         /**************/
@@ -43,108 +44,30 @@ _stm32_start_common:
         dsb
         isb
 
-        /*************************
-         * Check MCU = Cortex-M7 *
-        *************************/
-
-        .set    MCU_ID_REG, 0xE0042000
-        ldr     r0, =MCU_ID_REG
-        ldr     r1, [r0]
-        ldr     r2, =#0xFFF
-        and     r1, r1, r2  /* Retrieve the DEV_ID field of the MCU_ID reg */
-        ldr     r2, =#0x449
-        cmp     r1, r2      /* Compare to STM32F74xxx/75xxx Dev ID */
-        beq      init_cache
-        ldr     r2, =#0x451
-        cmp     r1, r2      /* Compare to STM32F76xxx/77xxx Dev ID */
-        bne     end         /* Do not initialize cache on STM32F4 */
-
-init_cache:
-        /********************
-         * Enable I/D cache *
-        ********************/
-
-        /* Register definition for cache handling */
-        .set    CCSIDR,  0xE000ED80
-        .set    CSSELR,  0xE000ED84
-        .set    DCISW,   0xE000EF60
-        .set    ICIALLU, 0xE000EF50
-        .set    CCR,     0xE000ED14
-
-        /* First invalidate the data cache */
-        mov     r0, #0x0
-        ldr     r11, =CSSELR
-        str     r0, [r11]       /* Select the data cache size */
-        dsb
-
-        ldr     r11, =CCSIDR
-        ldr     r2, [r11]       /* Cache size identification */
-        and     r1, r2, #0x7    /* Number of words in a cache line */
-        add     r7, r1, #0x4
-
-        ubfx    r4, r2, #3, #10  /* r4 = number of ways - 1 of data cache */
-        ubfx    r2, r2, #13, #15 /* r2 = number of sets - 1 of data cache */
-        clz     r6, r4           /* Calculate bit offset for "way" in DCISW */
-
-        ldr     r11, =DCISW
-
-inv_loop1:                       /* For each set */
-        mov     r1, r4
-        lsls    r8, r2, r7
-
-inv_loop2:                       /* For each way */
-        lsls    r3, r1, r6
-        orrs    r3, r3, r8
-
-        str     r3, [r11]        /* Invalidate the D-Cache line */
-        subs    r1, r1, #1
-        bge     inv_loop2
-        subs    r2, r2, #1
-        bge     inv_loop1
-
-        dsb
-
-        /* Now invalidate the instruction cache */
-        mov     r0, #0x0
-        ldr     r11, =ICIALLU
-        str     r0, [r11]
-
-        dsb
-        isb
-
-        /* Finally enable Instruction and Data cache */
-        ldr     r11, =CCR
-        ldr     r0, [r11]
-        orr     r0, r0, #(0x30000) /* Sets the I and D cache enabled fields */
-        str     r0, [r11]
-
-        dsb
-        isb
-
-        /* Wait for store to complete and reset pipeline with FPU enabled  */
-        dsb
-        isb
-
-        /*****************************
-         * TCM Memory initialisation *
-        *****************************/
-tcm_init:
-        .set    CM7_ITCMCR, 0xE000EF90
-        .set    CM7_DTCMCR, 0xE000EF94
-
-        ldr     r0, =CM7_ITCMCR
-        ldr     r1, [r0]
-        orr     r1, r1, #0x1 /* set the EN field */
+        .set    RESET_CTRL0_REG,  0x40053100
+        .set    RESET_CTRL1_REG,  0x40053104
+        ldr     r0, =RESET_CTRL0_REG
+        ldr     r1, =#0x10DF1000;
+        // GPIO_RST|AES_RST|ETHERNET_RST|SDIO_RST|DMA_RST|
+        // USB1_RST|USB0_RST|LCD_RST|M0_SUB_RST
+        str     r1, [r0]
+        ldr     r0, =RESET_CTRL1_REG
+        ldr     r1, =#0x01DFF7FF;
+        // M0APP_RST|CAN0_RST|CAN1_RST|I2S_RST|SSP1_RST|SSP0_RST|
+        // I2C1_RST|I2C0_RST|UART3_RST|UART1_RST|UART1_RST|UART0_RST|
+        // DAC_RST|ADC1_RST|ADC0_RST|QEI_RST|MOTOCONPWM_RST|SCT_RST|
+        // RITIMER_RST|TIMER3_RST|TIMER2_RST|TIMER1_RST|TIMER0_RST
         str     r1, [r0]
 
-        ldr     r0, =CM7_DTCMCR
-        ldr     r1, [r0]
-        orr     r1, r1, #0x1 /* set the EN field */
-        str     r1, [r0]
-
-        dsb
-        isb
+        // Clear all pending interrupts in the NVIC
+        .set NVIC_ICPR0, 0xE000E280
+        .set NVIC_ICPR1, 0xE000E284
+        ldr  r0, =NVIC_ICPR0
+        ldr  r1, =#0xFFFFFFFF
+        str  r1, [r0]
+        ldr  r0, =NVIC_ICPR1
+        str  r1, [r0]
 
 end:
         bx lr
-        .size _stm32_start_common, . - _stm32_start_common
+        .size _lpc43_start_common, . - _lpc43_start_common

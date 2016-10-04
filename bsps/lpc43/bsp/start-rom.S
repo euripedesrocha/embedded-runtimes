@@ -41,8 +41,10 @@ __vectors0:
 	.thumb_func
 	.globl _start_rom
 _start_rom:
-        /* Enable FPU and cache when appropriate */
-        bl _stm32_start_common
+        cpsid i //disable interrupts
+        /* Enable FPU, reset and clear pending interrupts */
+        bl _lpc43_start_common
+        cpsie i
 
 	/* Copy .data */
 	movw	r0,#:lower16:__data_start

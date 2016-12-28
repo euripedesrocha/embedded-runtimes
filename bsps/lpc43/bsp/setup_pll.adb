@@ -73,22 +73,29 @@ procedure Setup_Pll is
       First_Stage_MSEL : constant := 110_000_000 / IRC_Clock_Frequency;
       Second_Stage_MSEL : constant :=
                              Main_Clock_Frequency / XTAL_Clock_Frequency;
+      PLL1_REG_Next : PLL1_CTRL_Register := CGU_Periph.PLL1_CTRL;
 
    begin
+
+      CGU_Periph.BASE_M4_CLK.CLK_SEL := Irc_Default;
+      CGU_Periph.BASE_M4_CLK.AUTOBLOCK := Enabled;
+      CGU_Periph.BASE_M4_CLK.PD := Output_Stage_Enabled;
 
       --  PLL1 Power Down
       CGU_Periph.PLL1_CTRL.PD := Pll1_Powered_Down;
 
       if TwoStageSetup then
-         CGU_Periph.PLL1_CTRL.NSEL := ENUM_1_1;
-         CGU_Periph.PLL1_CTRL.PSEL := ENUM_1_1;
-         CGU_Periph.PLL1_CTRL.MSEL := First_Stage_MSEL;
+         PLL1_REG_Next.DIRECT := Enabled;
+         PLL1_REG_Next.NSEL := ENUM_1_1;
+         PLL1_REG_Next.PSEL := ENUM_1_1;
+         PLL1_REG_Next.MSEL := First_Stage_MSEL;
+         CGU_Periph.PLL1_CTRL := PLL1_REG_Next;
          loop
             exit when CGU_Periph.PLL1_STAT.LOCK = 1;
          end loop;
       end if;
 
-      CGU_Periph.BASE_M4_CLK.CLK_SEL := Crystal_Oscillator;
+      CGU_Periph.BASE_M4_CLK.CLK_SEL := Pll1;
       CGU_Periph.PLL1_CTRL.MSEL := Second_Stage_MSEL;
       loop
          exit when CGU_Periph.PLL1_STAT.LOCK = 1;
